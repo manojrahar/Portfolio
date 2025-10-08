@@ -564,36 +564,55 @@
                         platforms.</p>
                 </div>
 
-                <!-- Contact Form (Full Width) -->
-                <form
-                    class="space-y-4 p-8 bg-white/10 dark:bg-gray-800/20 backdrop-blur-md border border-white/20 dark:border-gray-700 rounded-2xl shadow mx-auto"
-                    action="YOUR_FORM_ENDPOINT" method="POST">
-                    <div>
-                        <label for="name" class="block text-gray-700 dark:text-gray-200 font-medium mb-1">Your
-                            Name</label>
-                        <input type="text" id="name" name="name" required
-                            class="w-full p-3 rounded-lg border border-gray-300 dark:border-gray-700 bg-white/20 dark:bg-gray-900/20 text-gray-800 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-accent transition">
-                    </div>
+                <!-- Contact Form (Connected to Google Sheet) -->
+<form id="contactForm"
+    class="space-y-4 p-8 bg-white/10 dark:bg-gray-800/20 backdrop-blur-md border border-white/20 dark:border-gray-700 rounded-2xl shadow mx-auto">
+    
+    <div>
+        <label for="name" class="block text-gray-700 dark:text-gray-200 font-medium mb-1">Your Name</label>
+        <input type="text" id="name" name="name" required
+            class="w-full p-3 rounded-lg border border-gray-300 dark:border-gray-700 bg-white/20 dark:bg-gray-900/20 text-gray-800 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-accent transition">
+    </div>
 
-                    <div>
-                        <label for="email" class="block text-gray-700 dark:text-gray-200 font-medium mb-1">Your
-                            Email</label>
-                        <input type="email" id="email" name="email" required
-                            class="w-full p-3 rounded-lg border border-gray-300 dark:border-gray-700 bg-white/20 dark:bg-gray-900/20 text-gray-800 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-accent transition">
-                    </div>
+    <div>
+        <label for="email" class="block text-gray-700 dark:text-gray-200 font-medium mb-1">Your Email</label>
+        <input type="email" id="email" name="email" required
+            class="w-full p-3 rounded-lg border border-gray-300 dark:border-gray-700 bg-white/20 dark:bg-gray-900/20 text-gray-800 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-accent transition">
+    </div>
 
-                    <div>
-                        <label for="message"
-                            class="block text-gray-700 dark:text-gray-200 font-medium mb-1">Message</label>
-                        <textarea id="message" name="message" rows="5" required
-                            class="w-full p-3 rounded-lg border border-gray-300 dark:border-gray-700 bg-white/20 dark:bg-gray-900/20 text-gray-800 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-accent transition"></textarea>
-                    </div>
+    <div>
+        <label for="message" class="block text-gray-700 dark:text-gray-200 font-medium mb-1">Message</label>
+        <textarea id="message" name="message" rows="5" required
+            class="w-full p-3 rounded-lg border border-gray-300 dark:border-gray-700 bg-white/20 dark:bg-gray-900/20 text-gray-800 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-accent transition"></textarea>
+    </div>
 
-                    <button type="submit"
-                        class="w-full bg-accent text-black font-medium py-3 rounded-xl hover:bg-accent/80 transition">
-                        Send Message
-                    </button>
-                </form>
+    <button type="submit"
+        class="w-full bg-accent text-black font-medium py-3 rounded-xl hover:bg-accent/80 transition">
+        Send Message
+    </button>
+</form>
+
+<script>
+  const scriptURL = "YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL"; // replace with your deployed URL
+  document.getElementById("contactForm").addEventListener("submit", e => {
+    e.preventDefault();
+    const formData = Object.fromEntries(new FormData(e.target).entries());
+    
+    fetch(scriptURL, {
+      method: "POST",
+      body: JSON.stringify(formData)
+    })
+    .then(res => res.text())
+    .then(text => {
+      alert("✅ Message sent successfully!");
+      e.target.reset();
+    })
+    .catch(err => {
+      alert("❌ Something went wrong: " + err.message);
+    });
+  });
+</script>
+
 
                 <!-- Social Handles Section -->
                 <div class="mt-16 text-center">
